@@ -1,0 +1,293 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.chiknrice.org/jen4fin"
+        xmlns:tns="http://www.chiknrice.org/jen4fin"
+        elementFormDefault="qualified" version="${project.version}">
+
+    <!--
+
+        Copyright (c) 2015 Ian Bondoc
+
+        This file is part of Jen4Fin
+
+        Jen4Fin is free software: you can redistribute it and/or modify it under the terms of the
+        GNU General Public License as published by the Free Software Foundation, either version 3
+        of the License, or(at your option) any later version.
+
+        Jen4Fin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+        without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+        See the GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License along with this program.
+        If not, see <http://www.gnu.org/licenses/>.
+
+    -->
+
+    <element name="config">
+        <complexType>
+            <sequence>
+                <element name="header" minOccurs="0" maxOccurs="1">
+                    <complexType>
+                        <choice minOccurs="1" maxOccurs="unbounded">
+                            <element name="string" type="tns:header-string-type"/>
+                            <element name="numeric" type="tns:header-numeric-type"/>
+                            <element name="date" type="tns:header-date-type"/>
+                        </choice>
+                    </complexType>
+                </element>
+                <element name="message-elements" minOccurs="1" maxOccurs="1">
+                    <complexType>
+                        <choice minOccurs="1" maxOccurs="unbounded">
+                            <element name="string" type="tns:string-type"/>
+                            <element name="var-string" type="tns:var-string-type"/>
+                            <element name="numeric" type="tns:numeric-type"/>
+                            <element name="var-numeric" type="tns:var-numeric-type"/>
+                            <element name="date" type="tns:date-type"/>
+                            <element name="raw" type="tns:raw-type"/>
+                            <element name="var-raw" type="tns:var-raw-type"/>
+                            <element name="track2" type="tns:track2-type"/>
+                            <element name="var-track2" type="tns:var-track2-type"/>
+                            <element name="ber-tlv" type="tns:ber-tlv-type"/>
+                            <element name="custom" type="tns:custom-type"/>
+                            <element name="var-custom" type="tns:var-custom-type"/>
+                            <element name="var-composite" type="tns:var-composite-type"/>
+                            <!--<element name="var-ber-tlv" type="tns:"/>-->
+                        </choice>
+                        <attribute name="mti" type="tns:mti-encoding" use="required"/>
+                        <attribute name="bitmap" type="tns:bitmap-encoding" use="required"/>
+                    </complexType>
+                </element>
+                <element name="message" minOccurs="1" maxOccurs="unbounded">
+                    <complexType>
+                        <sequence>
+                            <element name="de" type="tns:data-element-type" minOccurs="1" maxOccurs="unbounded"/>
+                        </sequence>
+                        <attribute name="mti" type="tns:mti-type" use="required"/>
+                    </complexType>
+                </element>
+            </sequence>
+        </complexType>
+        <key name="data-element-key">
+            <selector xpath="tns:message-elements/*"/>
+            <field xpath="@index"/>
+        </key>
+        <keyref name="data-element-keyref" refer="tns:data-element-key">
+            <selector xpath="tns:message/tns:de"/>
+            <field xpath="@index"/>
+        </keyref>
+    </element>
+
+    <!-- Patterns Types -->
+
+    <simpleType name="mti-type">
+        <restriction base="token">
+            <pattern value="\d{4,4}"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="index-type">
+        <restriction base="token">
+            <pattern value="\d{1,3}(\.\d{1,3})*"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="date-pattern-type">
+        <restriction base="token">
+            <pattern value="[GyYMwWDdFEuaHkKhmsSzZX]*"/>
+        </restriction>
+    </simpleType>
+
+    <!-- Encoding Types -->
+
+    <simpleType name="mti-encoding">
+        <restriction base="token">
+            <enumeration value="CHAR"/>
+            <enumeration value="BCD"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="length-prefix-encoding">
+        <restriction base="token">
+            <enumeration value="CHAR"/>
+            <enumeration value="BCD"/>
+            <enumeration value="BCD_F"/>
+            <enumeration value="BINARY"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="fixed-length-numeric-data-encoding">
+        <restriction base="token">
+            <enumeration value="CHAR"/>
+            <enumeration value="BCD"/>
+            <enumeration value="X_BCD"/>
+            <enumeration value="CX_BCD"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="var-length-numeric-data-encoding">
+        <restriction base="token">
+            <enumeration value="CHAR"/>
+            <enumeration value="BCD"/>
+            <enumeration value="BCD_F"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="date-encoding">
+        <restriction base="token">
+            <enumeration value="CHAR"/>
+            <enumeration value="BCD"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="bitmap-encoding">
+        <restriction base="token">
+            <enumeration value="BINARY"/>
+            <enumeration value="HEX"/>
+            <enumeration value="DATA_SET"/>
+        </restriction>
+    </simpleType>
+
+    <!-- Attributes -->
+
+    <attributeGroup name="data-element-attributes">
+        <attribute name="index" type="tns:index-type" use="required"/>
+        <attribute name="description" type="string" use="optional"/>
+    </attributeGroup>
+
+    <attributeGroup name="var-length-attributes">
+        <attribute name="length-digits" type="positiveInteger" use="required"/>
+        <attribute name="length-encoding" type="tns:length-prefix-encoding" use="optional" default="BCD"/>
+    </attributeGroup>
+
+    <attributeGroup name="fixed-length-string-attributes">
+        <attribute name="length" type="positiveInteger" use="required"/>
+        <attribute name="strip-padding" type="boolean" use="optional" default="true"/>
+        <attribute name="left-justified" type="boolean" use="optional" default="true"/>
+    </attributeGroup>
+
+    <attributeGroup name="fixed-length-numeric-attributes">
+        <attribute name="length" type="positiveInteger" use="required"/>
+        <attribute name="encoding" type="tns:fixed-length-numeric-data-encoding" use="optional"
+                   default="BCD"/>
+    </attributeGroup>
+
+    <attributeGroup name="date-attributes">
+        <attribute name="pattern" type="tns:date-pattern-type" use="required"/>
+        <attribute name="timezone" type="token" use="optional" default="UTC"/>
+        <attribute name="encoding" type="tns:date-encoding" use="optional" default="BCD"/>
+    </attributeGroup>
+
+    <!-- Complex Types -->
+
+    <complexType name="data-element-type">
+        <attribute name="index" type="tns:index-type" use="required"/>
+        <attribute name="optional" type="boolean" use="optional"
+                   default="true"/>
+    </complexType>
+
+    <complexType name="string-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:fixed-length-string-attributes"/>
+    </complexType>
+
+    <complexType name="header-string-type">
+        <attributeGroup ref="tns:fixed-length-string-attributes"/>
+        <attribute name="description" type="string" use="optional"/>
+    </complexType>
+
+    <complexType name="var-string-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:var-length-attributes"/>
+    </complexType>
+
+    <complexType name="numeric-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:fixed-length-numeric-attributes"/>
+    </complexType>
+
+    <complexType name="header-numeric-type">
+        <attributeGroup ref="tns:fixed-length-numeric-attributes"/>
+        <attribute name="description" type="string" use="optional"/>
+    </complexType>
+
+    <complexType name="var-numeric-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:var-length-attributes"/>
+        <attribute name="encoding" type="tns:var-length-numeric-data-encoding" use="optional"
+                   default="BCD"/>
+    </complexType>
+
+    <complexType name="date-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:date-attributes"/>
+    </complexType>
+
+    <complexType name="header-date-type">
+        <attributeGroup ref="tns:date-attributes"/>
+        <attribute name="description" type="string" use="optional"/>
+    </complexType>
+
+    <complexType name="raw-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attribute name="length" type="positiveInteger" use="required"/>
+    </complexType>
+
+    <complexType name="var-raw-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:var-length-attributes"/>
+    </complexType>
+
+    <complexType name="track2-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attribute name="length" type="positiveInteger" use="required"/>
+        <attribute name="packed" type="boolean" use="required"/>
+    </complexType>
+
+    <complexType name="var-track2-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:var-length-attributes"/>
+        <attribute name="packed" type="boolean" use="required"/>
+    </complexType>
+
+    <complexType name="ber-tlv-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:var-length-attributes"/>
+    </complexType>
+
+    <complexType name="custom-param-type">
+        <attribute name="key" type="token" use="required"/>
+        <attribute name="value" type="token" use="required"/>
+    </complexType>
+
+    <complexType name="custom-type">
+        <sequence>
+            <element name="param" type="tns:custom-param-type" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attribute name="length" type="positiveInteger" use="required"/>
+        <attribute name="codec" type="token" use="required"/>
+    </complexType>
+
+    <complexType name="var-custom-type">
+        <sequence>
+            <element name="param" type="tns:custom-param-type" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:var-length-attributes"/>
+        <attribute name="codec" type="token" use="required"/>
+    </complexType>
+
+    <complexType name="var-custom-composite-type">
+        <complexContent>
+            <extension base="tns:var-custom-type">
+                <attribute name="bitmap" type="tns:bitmap-encoding" use="optional" default="BINARY"/>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="var-composite-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:var-length-attributes"/>
+        <attribute name="bitmap" type="tns:bitmap-encoding" use="optional" default="BINARY"/>
+    </complexType>
+
+</schema>

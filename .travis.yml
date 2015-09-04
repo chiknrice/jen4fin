@@ -1,0 +1,19 @@
+language: java
+
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+
+branches:
+  only:
+    - master
+    - /^v[0-9]+\.[0-9]+\.[0-9]+/
+
+env:
+  global:
+    - secure: lfEtGQeQM+v4WkxNRBI0xlerg0XxbeLq9BIP91tmx0sC2PMGt8qZHk/KoqS/Uxy1g65BqiYBvwlP6yw/yPqHgh6x+mvfuQ7F0OffY9kbcT+RzGVDHrHSDapkgo3X3SPXstJFh9rqb6a+dMZKjhdXFFLgJu6C8oJRh/wtSWX6NyBkT11vrCjBXsrMiCHz/xNdhqIC5e3RQ18F7C5do14HXLWPRuwVw2KDI51wc6goNtuG7CAHlFZY4MJYq10anyBxROPLLpewcE0J6fdk3yDnkkCmbjDdM6BSYYXLl83b/ZiQ4D98Gz0JJejI3qfqDOksWrFx3FEwwyO74F+Z+p53jT03Q2D+dty2NwAvDrP0WKvsKWYFZ59ym9UZZSSD6VBtQ0StJ5p7ZhxgAVYj2mj5MwTpWVpSzqQQEtOYLBZGcmyX0sQzYk8Qb000iLz0NeIP2ScStqs37pzHRuJE1LNEWPOWWSYyDzqgw0yktyB+iVXTqhV7dMuCHy8M1dim/zw/C9YtGeKBWq4Bw1Q9QyStk1n8r19RyihFg3NQhI78By1zcUCHFB0ypQa6kn8QrECSdtvUm6h4BJzIbdUMnu+wVi/SdK+MumjJlgRu3Vbpct8C26N36XDPAGTkeyn+S0aMEz5SGvC3asuy2I2+PdVYzjekoZU/ZxELrDDbLexaByQ=
+    - secure: ouWmRjPdq6mdXYG628aSZSw4zcsqu10eXGij32SfN5KOVCnEpzlsHFbP5tKN+8dxWKl0gvmNT9lB7Hm4QhsieOIic8ykuVlxtUBiUdkSvoo+GHvorXhdSCW4gtJ4Ac8DzPgFGDPPJT5/HBR7+SuNaGKtWz4pu7Jl7XbEe7a+4xuAAI53aeX9mnvN4g7Sh26ZgNnRAsy8MMRU0ntBvIjw7Zgl6LJKBj8cO1AzTTlrtKd0U31IR/Gdloc6t3z/UJv/u/UbSh9uc14CdSBP0f/gLfR4ZcE2EOaGu9vd+wmQDUlJ95QRf94UkA9mqNCahJvwr2IWlS2byIPrWIrHXZayBHHf+19I7ERISJE8LwMAUpXPkNWxRae+DKUUfUtlCEK4LIfJHKLTOqlV3GN80VlatBK8LWPP+nVUY5udfcGV6sev6vyHyTXY+gHZuXofNyPy3FfLIkdtZMJC6JPMXtjR0b++5HK5bB0NT0h0LdI7oHuZ9pT1PCOrUU1GyRvcu4VIIFFlD1C2iArLBQjJYTzEO3+VbEm92GxkfFGR/N5KdvryBZ4V+I+n+cXXxjiSM8H4Qh7f7+asf5HEk2TtqB8Tlry0cJymeMbxiR+Iw3hXm2AWZ/MS2/WjxkeoxdK4/iaW2o+FrikM1FEOhoPu4Z8EPI8r6R9Q8T98tDxtamM68MQ=
+
+after_success:
+  - test "${TRAVIS_JDK_VERSION}" == "oraclejdk7" && ./gradlew jacocoTestReport coveralls
+  - test "${TRAVIS_TAG}" != "" && test "${TRAVIS_JDK_VERSION}" == "oraclejdk7" && ./gradlew bintrayUpload

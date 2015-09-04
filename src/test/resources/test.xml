@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.chiknrice.org/jen4fin"
+        xsi:schemaLocation="http://www.chiknrice.org/jen4fin jen4fin.xsd">
+
+    <header>
+        <string length="4"/>
+        <string length="8"/>
+        <numeric length="5"/>
+    </header>
+
+    <message-elements mti="BCD" bitmap="BINARY">
+        <string index="2" length="16"/>
+        <numeric index="3" length="4" encoding="BCD"/>
+        <custom index="4.1" codec="" length="2" description="">
+            <param key="a" value="b"/>
+        </custom>
+    </message-elements>
+
+    <message mti="0100">
+        <de index="2"/>
+        <de index="4.1"/>
+    </message>
+
+</config>
+    
+    
+    
