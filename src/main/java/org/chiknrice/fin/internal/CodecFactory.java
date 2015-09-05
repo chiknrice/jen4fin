@@ -42,8 +42,8 @@ class CodecFactory {
             bitmapEncoding = Bitmap.Encoding.valueOf(bitmapAttribute);
         }
         if (TAG_MESSAGE_ELEMENTS.equals(tag.getName()) && Bitmap.Encoding.DATA_SET.equals(bitmapEncoding)) {
-            throw new RuntimeException(
-                    format("% cannot be set to %s in %s", ATTR_BITMAP, Bitmap.Encoding.DATA_SET, TAG_MESSAGE_ELEMENTS));
+            throw new RuntimeException(format("%s cannot be set to %s in %s", ATTR_BITMAP, Bitmap.Encoding.DATA_SET,
+                    TAG_MESSAGE_ELEMENTS));
         }
         return null;
     }

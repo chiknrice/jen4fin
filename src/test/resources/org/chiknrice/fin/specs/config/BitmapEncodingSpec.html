@@ -31,8 +31,50 @@
 </p>
 
 <div class="example">
-    TODO
+    <p>
+        <b>Given</b> the configuration template below:
+        <pre c:set="#xmlConfigTemplate">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xmlns=&quot;http://www.chiknrice.org/jen4fin&quot;&gt;
+
+    &lt;message-elements mti=&quot;BCD&quot; bitmap=&quot;<b>BITMAP_ENCODING</b>&quot;&gt;
+        &lt;string index=&quot;2&quot; length=&quot;16&quot;/&gt;
+    &lt;/message-elements&gt;
+
+    &lt;message mti=&quot;0100&quot;&gt;
+        &lt;de index=&quot;2&quot;/&gt;
+    &lt;/message&gt;
+
+&lt;/config&gt;</pre>
+    </p>
+
+    <p>
+        Building <code>MessageCodec</code> with the above configuration where each encoding replaces the
+        <b>BITMAP_ENCODING</b> placeholder results in:
+    </p>
+
+    <table c:execute="#result=buildCodecWithConfig(#xmlConfigTemplate.replaceAll('BITMAP_ENCODING', #encoding))">
+        <tr>
+            <th c:set="#encoding">Encoding</th>
+            <th c:assertEquals="#result">Result</th>
+        </tr>
+        <tr>
+            <td>BINARY</td>
+            <td>Success</td>
+        </tr>
+        <tr>
+            <td>HEX</td>
+            <td>Success</td>
+        </tr>
+        <tr>
+            <td>DATA_SET</td>
+            <td>bitmap cannot be set to DATA_SET in message-elements</td>
+        </tr>
+    </table>
+
 </div>
+
 
 </body>
 </html>

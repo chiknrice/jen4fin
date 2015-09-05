@@ -33,8 +33,8 @@
     </p>
 
     <p>
-        Building <code>MessageCodec</code> for each encoding used in place of <b>MTI_ENCODING</b> placeholder results
-        in:
+        Building <code>MessageCodec</code> with the above configuration where each encoding replaces the
+        <b>MTI_ENCODING</b> placeholder results in:
     </p>
 
     <table c:execute="#result=buildCodecWithConfig(#xmlConfigTemplate.replaceAll('MTI_ENCODING', #encoding))">
