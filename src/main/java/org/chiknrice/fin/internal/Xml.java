@@ -69,7 +69,8 @@ class Xml {
     }
 
     Tag getTag(String tagsName) {
-        return getTags(tagsName).get(0);
+        List<Tag> tags = getTags(tagsName);
+        return tags.size() > 0 ? tags.get(0) : null;
     }
 
     static class Tag {
