@@ -15,8 +15,8 @@
  */
 package org.chiknrice.fin.internal;
 
-import static org.chiknrice.fin.internal.Xml.ATTR_BITMAP;
-import static org.chiknrice.fin.internal.Xml.Tag;
+import static java.lang.String.format;
+import static org.chiknrice.fin.internal.Xml.*;
 
 /**
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>
@@ -40,6 +40,10 @@ class CodecFactory {
         Bitmap.Encoding bitmapEncoding = null;
         if (bitmapAttribute != null) {
             bitmapEncoding = Bitmap.Encoding.valueOf(bitmapAttribute);
+        }
+        if (TAG_MESSAGE_ELEMENTS.equals(tag.getName()) && Bitmap.Encoding.DATA_SET.equals(bitmapEncoding)) {
+            throw new RuntimeException(
+                    format("% cannot be set to %s in %s", ATTR_BITMAP, Bitmap.Encoding.DATA_SET, TAG_MESSAGE_ELEMENTS));
         }
         return null;
     }
