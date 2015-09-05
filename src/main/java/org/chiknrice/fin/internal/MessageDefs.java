@@ -110,8 +110,8 @@ public class MessageDefs {
 
         void buildCodecs() {
             Tag headerTag = xml.getTag(TAG_HEADER);
-            compositeCodecs.put(IndexExpr.fromTag(headerTag), buildCompositeCodec(headerTag));
             if (headerTag != null) {
+                compositeCodecs.put(IndexExpr.fromTag(headerTag), buildCompositeCodec(headerTag));
                 List<Tag> headerTags = headerTag.getChildren();
                 for (int i = 0; i < headerTags.size(); i++) {
                     dataCodecs.put(IndexExpr.forHeader(i), buildDataCodec(headerTags.get(i)));
