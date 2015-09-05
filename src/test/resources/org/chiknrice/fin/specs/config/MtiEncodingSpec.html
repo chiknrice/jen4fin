@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:c="http://www.concordion.org/2007/concordion">
+<head>
+    <meta charset="UTF-8"/>
+    <title>MTI Encoding Specification</title>
+</head>
+<body>
+
+<h1>MTI Encoding Specification</h1>
+
+<p>
+    MTI is only allowed to be configured with BCD or CHAR encoding. The other types of encoding <code
+        c:echo="getAllEncodings()"></code> are not permitted by the configuration schema.
+</p>
+
+<div class="example" c:execute="#result=buildCodecWithConfig(#xmlConfig)">
+
+    <p>
+        Building <code>MessageCodec</code> with the following configuration shoud result in <span
+            c:assertEquals="#result">Success</span>
+        <pre c:set="#xmlConfig">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xmlns=&quot;http://www.chiknrice.org/jen4fin&quot;&gt;
+
+    &lt;message-elements mti=&quot;BCD&quot; bitmap=&quot;BINARY&quot;&gt;
+        &lt;string index=&quot;2&quot; length=&quot;16&quot;/&gt;
+    &lt;/message-elements&gt;
+
+    &lt;message mti=&quot;0100&quot;&gt;
+        &lt;de index=&quot;2&quot;/&gt;
+    &lt;/message&gt;
+
+&lt;/config&gt;</pre>
+    </p>
+
+</div>
+
+<div class="example" c:execute="#result=buildCodecWithConfig(#xmlConfig)">
+
+    <p>
+        <b>Given</b> the following configuration:
+        <pre c:set="#xmlConfig">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xmlns=&quot;http://www.chiknrice.org/jen4fin&quot;&gt;
+
+    &lt;message-elements mti=&quot;CHAR&quot; bitmap=&quot;BINARY&quot;&gt;
+        &lt;string index=&quot;2&quot; length=&quot;16&quot;/&gt;
+    &lt;/message-elements&gt;
+
+    &lt;message mti=&quot;0100&quot;&gt;
+        &lt;de index=&quot;2&quot;/&gt;
+    &lt;/message&gt;
+
+&lt;/config&gt;</pre>
+    </p>
+
+    <p>
+        The result should be <span c:assertEquals="#result">Success</span>
+    </p>
+
+</div>
+
+<div class="example" c:execute="#result=buildCodecWithConfig(#xmlConfig)">
+
+    <p>
+        <b>Given</b> the following configuration:
+        <pre c:set="#xmlConfig">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        xmlns=&quot;http://www.chiknrice.org/jen4fin&quot;&gt;
+
+    &lt;message-elements mti=&quot;BINARY&quot; bitmap=&quot;BINARY&quot;&gt;
+        &lt;string index=&quot;2&quot; length=&quot;16&quot;/&gt;
+    &lt;/message-elements&gt;
+
+    &lt;message mti=&quot;0100&quot;&gt;
+        &lt;de index=&quot;2&quot;/&gt;
+    &lt;/message&gt;
+
+&lt;/config&gt;</pre>
+    </p>
+
+    <p>
+        The result should be <span c:assertEquals="#result">cvc-enumeration-valid: Value 'BINARY' is not facet-valid with respect to enumeration '[CHAR, BCD]'. It must be a value from the enumeration.</span>
+    </p>
+
+</div>
+
+</body>
+</html>
