@@ -13,39 +13,15 @@
         c:echo="getAllEncodings()"></code> are not permitted by the configuration schema.
 </p>
 
-<div class="example" c:execute="#result=buildCodecWithConfig(#xmlConfig)">
-
+<div class="example">
     <p>
-        Building <code>MessageCodec</code> with the following configuration shoud result in <span
-            c:assertEquals="#result">Success</span>
-        <pre c:set="#xmlConfig">
+        <b>Given</b> the configuration template below:
+        <pre c:set="#xmlConfigTemplate">
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
         xmlns=&quot;http://www.chiknrice.org/jen4fin&quot;&gt;
 
-    &lt;message-elements mti=&quot;BCD&quot; bitmap=&quot;BINARY&quot;&gt;
-        &lt;string index=&quot;2&quot; length=&quot;16&quot;/&gt;
-    &lt;/message-elements&gt;
-
-    &lt;message mti=&quot;0100&quot;&gt;
-        &lt;de index=&quot;2&quot;/&gt;
-    &lt;/message&gt;
-
-&lt;/config&gt;</pre>
-    </p>
-
-</div>
-
-<div class="example" c:execute="#result=buildCodecWithConfig(#xmlConfig)">
-
-    <p>
-        <b>Given</b> the following configuration:
-        <pre c:set="#xmlConfig">
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-        xmlns=&quot;http://www.chiknrice.org/jen4fin&quot;&gt;
-
-    &lt;message-elements mti=&quot;CHAR&quot; bitmap=&quot;BINARY&quot;&gt;
+    &lt;message-elements mti=&quot;<b>MTI_ENCODING</b>&quot; bitmap=&quot;BINARY&quot;&gt;
         &lt;string index=&quot;2&quot; length=&quot;16&quot;/&gt;
     &lt;/message-elements&gt;
 
@@ -57,34 +33,48 @@
     </p>
 
     <p>
-        The result should be <span c:assertEquals="#result">Success</span>
+        Building <code>MessageCodec</code> for each encoding used in place of <b>MTI_ENCODING</b> placeholder results
+        in:
     </p>
 
-</div>
-
-<div class="example" c:execute="#result=buildCodecWithConfig(#xmlConfig)">
-
-    <p>
-        <b>Given</b> the following configuration:
-        <pre c:set="#xmlConfig">
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-        xmlns=&quot;http://www.chiknrice.org/jen4fin&quot;&gt;
-
-    &lt;message-elements mti=&quot;BINARY&quot; bitmap=&quot;BINARY&quot;&gt;
-        &lt;string index=&quot;2&quot; length=&quot;16&quot;/&gt;
-    &lt;/message-elements&gt;
-
-    &lt;message mti=&quot;0100&quot;&gt;
-        &lt;de index=&quot;2&quot;/&gt;
-    &lt;/message&gt;
-
-&lt;/config&gt;</pre>
-    </p>
-
-    <p>
-        The result should be <span c:assertEquals="#result">cvc-enumeration-valid: Value 'BINARY' is not facet-valid with respect to enumeration '[CHAR, BCD]'. It must be a value from the enumeration.</span>
-    </p>
+    <table c:execute="#result=buildCodecWithConfig(#xmlConfigTemplate.replaceAll('MTI_ENCODING', #encoding))">
+        <tr>
+            <th c:set="#encoding">Encoding</th>
+            <th c:assertEquals="#result">Result</th>
+        </tr>
+        <tr>
+            <td>CHAR</td>
+            <td>Success</td>
+        </tr>
+        <tr>
+            <td>BINARY</td>
+            <td>cvc-enumeration-valid: Value 'BINARY' is not facet-valid with respect to enumeration '[CHAR, BCD]'. It
+                must be a value from the enumeration.
+            </td>
+        </tr>
+        <tr>
+            <td>BCD</td>
+            <td>Success</td>
+        </tr>
+        <tr>
+            <td>BCD_F</td>
+            <td>cvc-enumeration-valid: Value 'BCD_F' is not facet-valid with respect to enumeration '[CHAR, BCD]'. It
+                must be a value from the enumeration.
+            </td>
+        </tr>
+        <tr>
+            <td>X_BCD</td>
+            <td>cvc-enumeration-valid: Value 'X_BCD' is not facet-valid with respect to enumeration '[CHAR, BCD]'. It
+                must be a value from the enumeration.
+            </td>
+        </tr>
+        <tr>
+            <td>CX_BCD</td>
+            <td>cvc-enumeration-valid: Value 'CX_BCD' is not facet-valid with respect to enumeration '[CHAR, BCD]'. It
+                must be a value from the enumeration.
+            </td>
+        </tr>
+    </table>
 
 </div>
 
