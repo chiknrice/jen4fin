@@ -32,7 +32,7 @@ import static org.chiknrice.fin.internal.InternalClassesApi.getEncodings;
  */
 @RunWith(ConcordionRunner.class)
 @FullOGNL
-public class BaseFixture {
+public abstract class BaseFixture {
 
     MessageCodec messageCodec;
 
