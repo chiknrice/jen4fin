@@ -13,20 +13,35 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
-package org.chiknrice.fin.priv;
+package org.chiknrice.fin.internal;
 
+import static org.chiknrice.fin.internal.Xml.ATTR_BITMAP;
+import static org.chiknrice.fin.internal.Xml.Tag;
 
 /**
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>
  */
-class ComponentDef {
+class CodecFactory {
 
-    CompositeDef parent;
+    static Codec<Number> buildMtiCodec(Tag tag) {
+        return null;
+    }
 
-    boolean optional;
+    static <T extends Codec<?>> T buildDataCodec(Tag tag) {
+        return null;
+    }
 
-    Codec<Number> lengthCodec;
+    static Codec<Number> buildLengthPrefixCodec(Tag tag) {
+        return null;
+    }
 
-    Codec<?> dataCodec;
+    static CompositeCodec buildCompositeCodec(Tag tag) {
+        String bitmapAttribute = tag.getOptionalAttribute(ATTR_BITMAP);
+        Bitmap.Encoding bitmapEncoding = null;
+        if (bitmapAttribute != null) {
+            bitmapEncoding = Bitmap.Encoding.valueOf(bitmapAttribute);
+        }
+        return null;
+    }
 
 }

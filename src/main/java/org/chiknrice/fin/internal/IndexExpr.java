@@ -13,13 +13,13 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
-package org.chiknrice.fin.priv;
+package org.chiknrice.fin.internal;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.String.format;
-import static org.chiknrice.fin.priv.Xml.*;
+import static org.chiknrice.fin.internal.Xml.*;
 
 /**
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>

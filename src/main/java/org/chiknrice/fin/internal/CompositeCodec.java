@@ -13,9 +13,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
-package org.chiknrice.fin.priv;
-
-import org.chiknrice.fin.priv.ComponentDef;
+package org.chiknrice.fin.internal;
 
 import java.nio.ByteBuffer;
 import java.util.Map;

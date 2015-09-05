@@ -13,9 +13,9 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
-package org.chiknrice.fin.priv;
+package org.chiknrice.fin.internal;
 
-import org.chiknrice.fin.priv.Xml.*;
+import org.chiknrice.fin.internal.Xml.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -35,8 +35,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.String.format;
-import static org.chiknrice.fin.priv.CodecFactory.*;
-import static org.chiknrice.fin.priv.Xml.*;
+import static org.chiknrice.fin.internal.CodecFactory.*;
+import static org.chiknrice.fin.internal.Xml.*;
 
 /**
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>

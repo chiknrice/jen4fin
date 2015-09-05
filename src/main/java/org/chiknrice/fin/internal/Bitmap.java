@@ -13,7 +13,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
-package org.chiknrice.fin.priv;
+package org.chiknrice.fin.internal;
 
 /**
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>

@@ -13,7 +13,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
-package org.chiknrice.fin.priv;
+package org.chiknrice.fin.internal;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

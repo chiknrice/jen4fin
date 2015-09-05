@@ -15,7 +15,7 @@
  */
 package org.chiknrice.fin;
 
-import org.chiknrice.fin.priv.MessageDefs;
+import org.chiknrice.fin.internal.MessageDefs;
 
 /**
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>
