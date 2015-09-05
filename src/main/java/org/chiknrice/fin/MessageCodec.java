@@ -17,6 +17,8 @@ package org.chiknrice.fin;
 
 import org.chiknrice.fin.internal.MessageDefs;
 
+import java.io.InputStream;
+
 /**
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>
  */
@@ -24,6 +26,10 @@ public class MessageCodec {
 
     public static MessageCodec build(String configXml) {
         return new MessageCodec(MessageDefs.build(configXml));
+    }
+
+    public static MessageCodec build(InputStream xmlInputStream) {
+        return new MessageCodec(MessageDefs.build(xmlInputStream));
     }
 
     private final MessageDefs defs;
