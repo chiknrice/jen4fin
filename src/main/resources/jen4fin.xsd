@@ -28,9 +28,9 @@
                 <element name="header" minOccurs="0" maxOccurs="1">
                     <complexType>
                         <choice minOccurs="1" maxOccurs="unbounded">
-                            <element name="string" type="tns:header-string-type"/>
-                            <element name="numeric" type="tns:header-numeric-type"/>
-                            <element name="date" type="tns:header-date-type"/>
+                            <element name="string" type="tns:fixed-member-string-type"/>
+                            <element name="numeric" type="tns:fixed-member-numeric-type"/>
+                            <element name="date" type="tns:fixed-member-date-type"/>
                         </choice>
                     </complexType>
                 </element>
@@ -49,8 +49,9 @@
                             <element name="ber-tlv" type="tns:ber-tlv-type"/>
                             <element name="custom" type="tns:custom-type"/>
                             <element name="var-custom" type="tns:var-custom-type"/>
+                            <element name="composite" type="tns:composite-type"/>
                             <element name="var-composite" type="tns:var-composite-type"/>
-                            <!--<element name="var-ber-tlv" type="tns:"/>-->
+                            <element name="var-ber-tlv" type="tns:var-ber-tlv-type"/>
                         </choice>
                         <attribute name="mti" type="tns:mti-encoding" use="required"/>
                         <attribute name="bitmap" type="tns:bitmap-encoding" use="required"/>
@@ -93,6 +94,18 @@
     <simpleType name="date-pattern-type">
         <restriction base="token">
             <pattern value="[GyYMwWDdFEuaHkKhmsSzZX]*"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="non-empty-token">
+        <restriction base="token">
+            <minLength value="1"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="non-empty-string">
+        <restriction base="string">
+            <minLength value="1"/>
         </restriction>
     </simpleType>
 
@@ -150,7 +163,7 @@
 
     <attributeGroup name="data-element-attributes">
         <attribute name="index" type="tns:index-type" use="required"/>
-        <attribute name="description" type="string" use="optional"/>
+        <attribute name="description" type="tns:non-empty-string" use="optional"/>
     </attributeGroup>
 
     <attributeGroup name="var-length-attributes">
@@ -172,7 +185,7 @@
 
     <attributeGroup name="date-attributes">
         <attribute name="pattern" type="tns:date-pattern-type" use="required"/>
-        <attribute name="timezone" type="token" use="optional" default="UTC"/>
+        <attribute name="timezone" type="tns:non-empty-token" use="optional" default="UTC"/>
         <attribute name="encoding" type="tns:date-encoding" use="optional" default="BCD"/>
     </attributeGroup>
 
@@ -189,9 +202,9 @@
         <attributeGroup ref="tns:fixed-length-string-attributes"/>
     </complexType>
 
-    <complexType name="header-string-type">
+    <complexType name="fixed-member-string-type">
         <attributeGroup ref="tns:fixed-length-string-attributes"/>
-        <attribute name="description" type="string" use="optional"/>
+        <attribute name="description" type="tns:non-empty-string" use="optional"/>
     </complexType>
 
     <complexType name="var-string-type">
@@ -204,9 +217,9 @@
         <attributeGroup ref="tns:fixed-length-numeric-attributes"/>
     </complexType>
 
-    <complexType name="header-numeric-type">
+    <complexType name="fixed-member-numeric-type">
         <attributeGroup ref="tns:fixed-length-numeric-attributes"/>
-        <attribute name="description" type="string" use="optional"/>
+        <attribute name="description" type="tns:non-empty-string" use="optional"/>
     </complexType>
 
     <complexType name="var-numeric-type">
@@ -221,9 +234,9 @@
         <attributeGroup ref="tns:date-attributes"/>
     </complexType>
 
-    <complexType name="header-date-type">
+    <complexType name="fixed-member-date-type">
         <attributeGroup ref="tns:date-attributes"/>
-        <attribute name="description" type="string" use="optional"/>
+        <attribute name="description" type="tns:non-empty-string" use="optional"/>
     </complexType>
 
     <complexType name="raw-type">
@@ -234,6 +247,11 @@
     <complexType name="var-raw-type">
         <attributeGroup ref="tns:data-element-attributes"/>
         <attributeGroup ref="tns:var-length-attributes"/>
+    </complexType>
+
+    <complexType name="fixed-member-raw-type">
+        <attribute name="length" type="positiveInteger" use="required"/>
+        <attribute name="description" type="tns:non-empty-string" use="optional"/>
     </complexType>
 
     <complexType name="track2-type">
@@ -254,8 +272,8 @@
     </complexType>
 
     <complexType name="custom-param-type">
-        <attribute name="key" type="token" use="required"/>
-        <attribute name="value" type="token" use="required"/>
+        <attribute name="key" type="tns:non-empty-token" use="required"/>
+        <attribute name="value" type="tns:non-empty-token" use="required"/>
     </complexType>
 
     <complexType name="custom-type">
@@ -264,7 +282,7 @@
         </sequence>
         <attributeGroup ref="tns:data-element-attributes"/>
         <attribute name="length" type="positiveInteger" use="required"/>
-        <attribute name="codec" type="token" use="required"/>
+        <attribute name="codec" type="tns:non-empty-token" use="required"/>
     </complexType>
 
     <complexType name="var-custom-type">
@@ -273,7 +291,7 @@
         </sequence>
         <attributeGroup ref="tns:data-element-attributes"/>
         <attributeGroup ref="tns:var-length-attributes"/>
-        <attribute name="codec" type="token" use="required"/>
+        <attribute name="codec" type="tns:non-empty-token" use="required"/>
     </complexType>
 
     <complexType name="var-custom-composite-type">
@@ -284,10 +302,25 @@
         </complexContent>
     </complexType>
 
+    <complexType name="composite-type">
+        <choice minOccurs="1" maxOccurs="unbounded">
+            <element name="string" type="tns:fixed-member-string-type"/>
+            <element name="numeric" type="tns:fixed-member-numeric-type"/>
+            <element name="date" type="tns:fixed-member-date-type"/>
+            <element name="raw" type="tns:fixed-member-raw-type"/>
+        </choice>
+        <attributeGroup ref="tns:data-element-attributes"/>
+    </complexType>
+
     <complexType name="var-composite-type">
         <attributeGroup ref="tns:data-element-attributes"/>
         <attributeGroup ref="tns:var-length-attributes"/>
         <attribute name="bitmap" type="tns:bitmap-encoding" use="optional" default="BINARY"/>
+    </complexType>
+
+    <complexType name="var-ber-tlv-type">
+        <attributeGroup ref="tns:data-element-attributes"/>
+        <attributeGroup ref="tns:var-length-attributes"/>
     </complexType>
 
 </schema>

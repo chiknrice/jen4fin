@@ -11,14 +11,19 @@
     <message-elements mti="BCD" bitmap="BINARY">
         <string index="2" length="16"/>
         <numeric index="3" length="4" encoding="BCD"/>
-        <custom index="4.1" codec="" length="2" description="">
+        <custom index="4.1" codec="my.sample.Codec" length="2" description="a b c">
             <param key="a" value="b"/>
         </custom>
+        <composite index="5.1">
+            <string length="5"/>
+        </composite>
+        <date index="6" pattern="yyyy" description="x"/>
     </message-elements>
 
     <message mti="0100">
         <de index="2"/>
         <de index="4.1"/>
+        <de index="5.1"/>
     </message>
 
 </config>
