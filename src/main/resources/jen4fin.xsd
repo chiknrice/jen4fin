@@ -308,6 +308,7 @@
             <element name="numeric" type="tns:fixed-member-numeric-type"/>
             <element name="date" type="tns:fixed-member-date-type"/>
             <element name="raw" type="tns:fixed-member-raw-type"/>
+            <element name="composite" type="tns:composite-type"/>
         </choice>
         <attributeGroup ref="tns:data-element-attributes"/>
     </complexType>
