@@ -19,14 +19,20 @@ package org.chiknrice.fin.internal;
 import java.nio.ByteBuffer;
 
 /**
- * Encoder for variable length elements.  This defines the standard flow of encoding the data and the length prefix.
+ * Base class for variable length data element encoders.  This defines the standard flow of encoding the data and the
+ * length prefix.
  *
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>
  */
 abstract class VarLengthDataEncoder<T> implements Encoder<T> {
 
-    int varLengthPrefixDigits;
-    Encoding varLengthPrefixEncoding;
+    final int varLengthPrefixDigits;
+    final Encoding varLengthPrefixEncoding;
+
+    VarLengthDataEncoder(int varLengthPrefixDigits, Encoding varLengthPrefixEncoding) {
+        this.varLengthPrefixDigits = varLengthPrefixDigits;
+        this.varLengthPrefixEncoding = varLengthPrefixEncoding;
+    }
 
     @Override
     public void encode(ByteBuffer buf, T value) {
@@ -39,6 +45,12 @@ abstract class VarLengthDataEncoder<T> implements Encoder<T> {
         buf.position(buf.position() + dataBytes);
     }
 
+    /**
+     * Encodes the length prefix of a var length data element
+     *
+     * @param buf
+     * @param dataLength
+     */
     void encodeLength(ByteBuffer buf, int dataLength) {
         // TODO: implement encoding of length prefix
         switch (varLengthPrefixEncoding) {
@@ -57,6 +69,11 @@ abstract class VarLengthDataEncoder<T> implements Encoder<T> {
         }
     }
 
+    /**
+     * Determines the length bytes for a particular encoding of the length prefix
+     *
+     * @return
+     */
     int determineLengthBytes() {
         int lengthPrefixBytes;
         switch (varLengthPrefixEncoding) {
