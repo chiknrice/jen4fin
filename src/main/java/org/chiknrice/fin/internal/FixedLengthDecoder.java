@@ -23,11 +23,11 @@ import java.nio.ByteBuffer;
  *
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>
  */
-abstract class FixedLengthDataDecoder<T> extends BaseDecoder<T> {
+abstract class FixedLengthDecoder<T> extends BaseDecoder<T> {
 
     int length;
 
-    FixedLengthDataDecoder(int length, Encoding dataEncoding) {
+    FixedLengthDecoder(int length, Encoding dataEncoding) {
         super(dataEncoding);
         this.length = length;
     }

@@ -24,12 +24,12 @@ import java.nio.ByteBuffer;
  *
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>
  */
-abstract class VarLengthDataEncoder<T> implements Encoder<T> {
+abstract class VarLengthEncoder<T> implements Encoder<T> {
 
     final int varLengthPrefixDigits;
     final Encoding varLengthPrefixEncoding;
 
-    VarLengthDataEncoder(int varLengthPrefixDigits, Encoding varLengthPrefixEncoding) {
+    VarLengthEncoder(int varLengthPrefixDigits, Encoding varLengthPrefixEncoding) {
         this.varLengthPrefixDigits = varLengthPrefixDigits;
         this.varLengthPrefixEncoding = varLengthPrefixEncoding;
     }

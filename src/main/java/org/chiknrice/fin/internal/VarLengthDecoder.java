@@ -24,12 +24,12 @@ import java.nio.charset.StandardCharsets;
  *
  * @author <a href="mailto:chiknrice@gmail.com">Ian Bondoc</a>
  */
-abstract class VarLengthDataDecoder<T> extends BaseDecoder<T> {
+abstract class VarLengthDecoder<T> extends BaseDecoder<T> {
 
     final int lengthPrefixDigits;
     final Encoding lengthPrefixEncoding;
 
-    VarLengthDataDecoder(int lengthPrefixDigits, Encoding lengthPrefixEncoding, Encoding dataEncoding) {
+    VarLengthDecoder(int lengthPrefixDigits, Encoding lengthPrefixEncoding, Encoding dataEncoding) {
         super(dataEncoding);
         this.lengthPrefixDigits = lengthPrefixDigits;
         this.lengthPrefixEncoding = lengthPrefixEncoding;
